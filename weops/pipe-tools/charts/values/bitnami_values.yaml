@@ -1,0 +1,41 @@
+commonLabels:
+  object: postgres
+
+global:
+  postgresql:
+    auth:
+      postgresPassword: Weops123!
+      username: weops
+      password: Weops123!
+
+primary:
+  nodeSelector:
+    node-role: worker
+  persistence:
+    enabled: false
+  resources:
+    limits:
+      cpu: 300m
+      memory: 500Mi
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  startupProbe:
+    enabled: false
+
+readReplicas:
+  nodeSelector:
+    node-role: worker
+  persistence:
+    enabled: false
+  resources:
+    limits:
+      cpu: 300m
+      memory: 500Mi
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  startupProbe:
+    enabled: false
