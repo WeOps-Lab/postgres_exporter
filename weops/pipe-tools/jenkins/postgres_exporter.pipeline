@@ -1,0 +1,33 @@
+pipeline {
+    agent {
+        node('chaos')
+    }
+
+    parameters {
+       string(name: 'BranchName', defaultValue: 'dev', description: null)
+       string(name: 'GitTag', defaultValue: 'dev', description: null)
+       string(name: 'BuildPath', defaultValue: 'weops/pipe-tools/bin', description: 'The path to build binaries')
+    }
+
+    environment {
+       PATH = "/data/go/bin:${env.PATH}"
+    }
+
+    stages {
+        stage('拉取代码') {
+            steps {
+                git url: 'https://proxy.zyun.vip/https://github.com/WeOps-Lab/postgres_exporter', branch: "weops/${env.BranchName}"
+            }
+        }
+
+        stage('部署监控对象') {
+            steps {
+                dir('weops/pipe-tools/charts') {
+                    sh 'bash helm_uninstall.sh'
+                    sleep 1
+                    sh 'bash helm_install.sh'
+                }
+            }
+        }
+
+    }
