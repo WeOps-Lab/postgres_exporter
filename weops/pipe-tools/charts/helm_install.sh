@@ -8,7 +8,7 @@ for version in "${object_versions[@]}"; do
     version_suffix="v${version%%.*}.${version%.*.*}"
     version_suffix=${version_suffix//./-}
 
-    helm install pg --namespace $object -f ./values/bitnami_values.yaml ./postgres \
+    helm install pg-standalone-$version_suffix --namespace $object -f ./values/bitnami_values.yaml ./postgres \
     --set image.tag=$version \
     --set commonLabels.object_version=$version_suffix
 done
