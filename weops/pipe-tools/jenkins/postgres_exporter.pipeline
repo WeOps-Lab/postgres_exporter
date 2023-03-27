@@ -30,5 +30,35 @@ pipeline {
             }
         }
 
+        stage('编译探针'){
+            steps {
+                script {
+                    def buildOptions = [
+                        "linux_amd64": "GOOS=linux GOARCH=amd64",
+                        "windows_amd64": "GOOS=windows GOARCH=amd64",
+                        "linux_arm64": "GOOS=linux GOARCH=arm64"
+                    ]
+                    parallel buildOptions.collectEntries { arch, options ->
+                        [(arch): {
+                            if (arch == "linux_amd64" || arch == "windows_amd64") {
+                                sh "make build GOPROXY=https://goproxy.cn ${options} PREFIX=${env.BuildPath}"
+                            } else if (arch == "linux_arm64") {
+                                sh "make build GOPROXY=https://goproxy.cn ${options} PREFIX=${env.BuildPath}/${arch}"
+                                sh "cp ${env.BuildPath}/${arch}/sql_exporter ${env.BuildPath}/sql_exporter_arm64"
+                            }
+                        }]
+                    }
+                }
+            }
+        }
+
+        stage('构建镜像和推送镜像') {
+            steps {
+                dir("${env.BuildPath}") {
+                    sh 'docker build --no-cache  -f ../docker/Dockerfile -t registry-svc:25000/library/postgres-exporter:latest .'
+                    sh 'docker push registry-svc:25000/library/postgres-exporter:latest'
+                }
+            }
+        }
     }
 }
