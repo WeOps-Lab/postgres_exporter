@@ -60,5 +60,29 @@ pipeline {
                 }
             }
         }
+
+        stage('生成部署文件并部署探针和混沌工程') {
+            steps {
+                dir("weops/pipe-tools/exporter/template") {
+                    sh 'bash build.sh'
+                }
+
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'chaos', namespace: '', serverUrl: 'https://10.10.90.113:6443') {
+                    script {
+                        def components = ["postgres"]
+                        components.each { component ->
+                            dir("weops/pipe-tools/exporter") {
+                                sh "kubectl delete -f ./standalone -n ${component}"
+                                sh "kubectl apply -f ./standalone -n ${component}"
+                            }
+                        }
+                    }
+
+                    dir('weops/pipe-tools/chaos') {
+                        sh 'kubectl apply -f ./ '
+                    }
+                }
+            }
+        }
     }
 }
