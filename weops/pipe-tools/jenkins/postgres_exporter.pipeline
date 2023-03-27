@@ -44,7 +44,7 @@ pipeline {
                                 sh "make build GOPROXY=https://goproxy.cn ${options} PREFIX=${env.BuildPath}"
                             } else if (arch == "linux_arm64") {
                                 sh "make build GOPROXY=https://goproxy.cn ${options} PREFIX=${env.BuildPath}/${arch}"
-                                sh "cp ${env.BuildPath}/${arch}/sql_exporter ${env.BuildPath}/sql_exporter_arm64"
+                                sh "cp ${env.BuildPath}/${arch}/postgres_exporter ${env.BuildPath}/postgres_exporter_arm64"
                             }
                         }]
                     }
