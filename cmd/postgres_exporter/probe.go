@@ -100,22 +100,8 @@ func handleProbe(logger log.Logger, excludeDatabases []string) http.HandlerFunc 
 
 		registry.MustRegister(pc)
 
-		var gatherers prometheus.Gatherers
-		// 过滤自带的默认指标
-		if *pgMetricsOnly {
-			gatherers = prometheus.Gatherers{
-				filteredGatherer(prometheus.DefaultGatherer),
-				registry,
-			}
-		} else {
-			gatherers = prometheus.Gatherers{
-				prometheus.DefaultGatherer,
-				registry,
-			}
-		}
-
 		// TODO check success, etc
-		h := promhttp.HandlerFor(gatherers, promhttp.HandlerOpts{})
+		h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 		h.ServeHTTP(w, r)
 	}
 }
