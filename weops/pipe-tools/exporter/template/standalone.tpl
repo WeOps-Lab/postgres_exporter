@@ -60,7 +60,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: DATA_SOURCE_NAME
-          value: "postgres://postgres:Weops123!@pg-standalone-{{VERSION}}-postgresql.postgres:5432?sslmode=disable"
+          value: "postgresql://postgres:Weops123!@pg-standalone-{{VERSION}}-postgresql.postgres:5432?sslmode=disable"
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0
