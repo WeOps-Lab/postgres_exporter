@@ -74,6 +74,9 @@ pipeline {
                             dir("weops/pipe-tools/exporter") {
                                 sh "kubectl delete -f ./standalone -n ${component} --ignore-not-found"
                                 sh "kubectl apply -f ./standalone -n ${component}"
+
+                                sh "kubectl delete -f ./cluster -n ${component} --ignore-not-found"
+                                sh "kubectl apply -f ./cluster -n ${component}"
                             }
                         }
                     }

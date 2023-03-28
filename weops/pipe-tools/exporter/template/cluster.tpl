@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: pg-exporter-standalone-{{VERSION}}
+  name: pg-exporter-cluster-{{architecture}}-{{VERSION}}
   namespace: postgres
 spec:
-  serviceName: pg-exporter-standalone-{{VERSION}}
+  serviceName: pg-exporter-cluster-{{architecture}}-{{VERSION}}
   replicas: 1
   selector:
     matchLabels:
-      app: pg-exporter-standalone-{{VERSION}}
+      app: pg-exporter-cluster-{{architecture}}-{{VERSION}}
   template:
     metadata:
       annotations:
@@ -45,9 +45,9 @@ spec:
         telegraf.influxdata.com/limits-cpu: '300m'
         telegraf.influxdata.com/limits-memory: '300Mi'
       labels:
-        app: pg-exporter-standalone-{{VERSION}}
+        app: pg-exporter-cluster-{{architecture}}-{{VERSION}}
         exporter_object: postgres
-        object_mode: standalone
+        object_mode: cluster
         object_version: {{VERSION}}
         pod_type: exporter
     spec:
@@ -55,17 +55,17 @@ spec:
         node-role: worker
       shareProcessNamespace: true
       containers:
-      - name: pg-exporter-standalone-{{VERSION}}
+      - name: pg-exporter-cluster-{{architecture}}-{{VERSION}}
         image: registry-svc:25000/library/postgres-exporter:latest
         imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 0
         args:
           - --log.level=debug
         env:
         - name: DATA_SOURCE_NAME
-          value: "postgresql://postgres:Weops123!@pg-standalone-{{VERSION}}-postgresql.postgres:5432?sslmode=disable"
-        securityContext:
-          allowPrivilegeEscalation: false
-          runAsUser: 0
+          value: "postgresql://postgres:Weops123!@pg-cluster-{{VERSION}}-postgresql-{{architecture}}.postgres:5432?sslmode=disable"
         resources:
           requests:
             cpu: 100m
@@ -81,8 +81,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: pg-exporter-standalone-{{VERSION}}
-  name: pg-exporter-standalone-{{VERSION}}
+    app: pg-exporter-cluster-{{architecture}}-{{VERSION}}
+  name: pg-exporter-cluster-{{architecture}}-{{VERSION}}
   namespace: postgres
   annotations:
     prometheus.io/scrape: "true"
@@ -94,4 +94,4 @@ spec:
     protocol: TCP
     targetPort: 9187
   selector:
-    app: pg-exporter-standalone-{{VERSION}}
+    app: pg-exporter-cluster-{{architecture}}-{{VERSION}}
