@@ -15,5 +15,6 @@ for version in "${object_versions[@]}"; do
     # 集群
     helm install pg-cluster-$version_suffix --namespace $object -f ./values/bitnami_values.yaml ./postgres \
     --set image.tag=$version \
+    --set architecture=replication \
     --set commonLabels.object_version=$version_suffix
 done
