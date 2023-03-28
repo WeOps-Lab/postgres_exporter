@@ -63,7 +63,7 @@ spec:
         image: registry-svc:25000/library/postgres-exporter:latest
         imagePullPolicy: Always
         args:
-          - --extend.query-path="/query_conf/queries.yaml"
+          - --extend.query-path=/query_conf/queries.yaml
           - --log.level=debug
         volumeMounts:
           - mountPath: /query_conf
