@@ -15,6 +15,7 @@ package main
 
 import (
 	"fmt"
+	dto "github.com/prometheus/client_model/go"
 	"net/http"
 	"os"
 	"strings"
@@ -50,7 +51,11 @@ var (
 	excludeDatabases       = kingpin.Flag("exclude-databases", "A list of databases to remove when autoDiscoverDatabases is enabled").Default("").Envar("PG_EXPORTER_EXCLUDE_DATABASES").String()
 	includeDatabases       = kingpin.Flag("include-databases", "A list of databases to include when autoDiscoverDatabases is enabled").Default("").Envar("PG_EXPORTER_INCLUDE_DATABASES").String()
 	metricPrefix           = kingpin.Flag("metric-prefix", "A metric prefix can be used to have non-default (not \"pg\") prefixes for each of the metrics").Default("pg").Envar("PG_EXPORTER_METRIC_PREFIX").String()
-	logger                 = log.NewNopLogger()
+	pgMetricsOnly          = kingpin.Flag("postgres-only-metrics",
+		"Whether to also export go runtime metrics, defaults to true.",
+	).Default("true").Bool()
+
+	logger = log.NewNopLogger()
 )
 
 // Metric name parts.
@@ -161,4 +166,23 @@ func main() {
 		level.Error(logger).Log("msg", "Error running HTTP server", "err", err)
 		os.Exit(1)
 	}
+}
+
+// filteredGatherer 过滤go的性能指标
+func filteredGatherer(g prometheus.Gatherer) prometheus.Gatherer {
+	return prometheus.GathererFunc(func() ([]*dto.MetricFamily, error) {
+		metricFamilies, err := g.Gather()
+		if err != nil {
+			return nil, err
+		}
+
+		filteredFamilies := []*dto.MetricFamily{}
+		for _, mf := range metricFamilies {
+			if !strings.HasPrefix(mf.GetName(), "go_") && !strings.HasPrefix(mf.GetName(), "process_") && !strings.HasPrefix(mf.GetName(), "promhttp_") {
+				filteredFamilies = append(filteredFamilies, mf)
+			}
+		}
+
+		return filteredFamilies, nil
+	})
 }
