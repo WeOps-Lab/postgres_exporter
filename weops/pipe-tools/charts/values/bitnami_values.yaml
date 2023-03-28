@@ -6,8 +6,6 @@ global:
     auth:
       # Password for the "postgres" admin user (overrides auth.postgresPassword)
       postgresPassword: Weops123!
-      username: weops
-      password: Weops123!
 
 primary:
   nodeSelector:
