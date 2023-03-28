@@ -14,8 +14,8 @@ primary:
     enabled: false
   resources:
     limits:
-      cpu: 300m
-      memory: 500Mi
+      cpu: 500m
+      memory: 800Mi
 
 
 readReplicas:
@@ -26,6 +26,6 @@ readReplicas:
     enabled: false
   resources:
     limits:
-      cpu: 300m
-      memory: 500Mi
+      cpu: 500m
+      memory: 800Mi
 
