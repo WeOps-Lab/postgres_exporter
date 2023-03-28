@@ -54,6 +54,10 @@ spec:
       nodeSelector:
         node-role: worker
       shareProcessNamespace: true
+      volumes:
+        - name: pg-extend-queries
+          configMap:
+            name: pg-extend-queries
       containers:
       - name: pg-exporter-cluster-{{ARCHITECTURE}}-{{VERSION}}
         image: registry-svc:25000/library/postgres-exporter:latest
@@ -62,7 +66,11 @@ spec:
           allowPrivilegeEscalation: false
           runAsUser: 0
         args:
+          - --extend.query-path="/query_conf/queries.yaml"
           - --log.level=debug
+        volumeMounts:
+          - mountPath: /query_conf
+            name: pg-extend-queries
         env:
         - name: DATA_SOURCE_NAME
           value: "postgresql://postgres:Weops123!@pg-cluster-{{VERSION}}-postgresql-{{ARCHITECTURE}}.postgres:5432?sslmode=disable"
