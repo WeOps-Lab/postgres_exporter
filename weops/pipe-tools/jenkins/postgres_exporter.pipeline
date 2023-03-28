@@ -24,7 +24,7 @@ pipeline {
             steps {
                 dir('weops/pipe-tools/charts') {
                     sh 'bash helm_uninstall.sh'
-                    sleep 1
+                    sleep 5
                     sh 'bash helm_install.sh'
                 }
             }
