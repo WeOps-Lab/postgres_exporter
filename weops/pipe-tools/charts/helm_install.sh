@@ -26,4 +26,6 @@ for version in "${object_versions[@]}"; do
     --set architecture=replication \
     --set commonLabels.object_version=$version_suffix \
     $pg_security_args
+
+    sleep 3
 done
