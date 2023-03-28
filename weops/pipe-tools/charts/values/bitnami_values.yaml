@@ -16,12 +16,7 @@ primary:
     limits:
       cpu: 300m
       memory: 500Mi
-  livenessProbe:
-    enabled: false
-  readinessProbe:
-    enabled: false
-  startupProbe:
-    enabled: false
+
 
 readReplicas:
   name: secondary
@@ -33,9 +28,4 @@ readReplicas:
     limits:
       cpu: 300m
       memory: 500Mi
-  livenessProbe:
-    enabled: false
-  readinessProbe:
-    enabled: false
-  startupProbe:
-    enabled: false
+
