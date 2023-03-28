@@ -26,6 +26,7 @@ primary:
     enabled: false
 
 readReplicas:
+  name: secondary
   nodeSelector:
     node-role: worker
   persistence:
