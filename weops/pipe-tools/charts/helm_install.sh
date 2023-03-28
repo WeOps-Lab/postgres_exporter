@@ -9,7 +9,7 @@ for version in "${object_versions[@]}"; do
 
     # 设置PodSecurityContext和ContainerSecurityContext
     if [[ $version == "9.4"* ]] || [[ $version == "9.5"* ]]; then
-        pg_security_args="--set primary.podSecurityContext.fsGroup=0 --set primary.containerSecurityContext.runAsUser=0"
+        pg_security_args="--set primary.podSecurityContext.fsGroup=0 --set primary.containerSecurityContext.runAsUser=0 --set readReplicas.podSecurityContext.fsGroup=0 --set readReplicas.containerSecurityContext.runAsUser=0"
     else
         pg_security_args=""
     fi
