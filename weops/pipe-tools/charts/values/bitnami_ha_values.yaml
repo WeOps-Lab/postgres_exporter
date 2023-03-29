@@ -6,9 +6,9 @@ commonLabels:
 
 global:
   postgresql:
-    auth:
-      # Password for the "postgres" admin user (overrides auth.postgresPassword)
-      postgresPassword: Weops123!
+    password: Weops123!
+  pgpool:
+    adminPassword: Weops123!
 
 postgresql:
   nodeSelector:
