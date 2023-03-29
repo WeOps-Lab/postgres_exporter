@@ -21,8 +21,3 @@ postgresql:
     auth.sql: |
       CREATE ROLE weops WITH LOGIN PASSWORD 'Weops123!';
       GRANT pg_monitor TO weops;
-
-pgpool:
-  initdbScripts: |
-    CREATE ROLE weops WITH LOGIN PASSWORD 'Weops123!';
-    GRANT pg_monitor TO weops;
