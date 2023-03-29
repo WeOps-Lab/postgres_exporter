@@ -67,7 +67,6 @@ spec:
           runAsUser: 0
         args:
           - --extend.query-path=/query_conf/queries.yaml
-          - --log.level=debug
         volumeMounts:
           - mountPath: /query_conf
             name: pg-extend-queries

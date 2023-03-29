@@ -64,7 +64,6 @@ spec:
         imagePullPolicy: Always
         args:
           - --extend.query-path=/query_conf/queries.yaml
-          - --log.level=debug
         volumeMounts:
           - mountPath: /query_conf
             name: pg-extend-queries
