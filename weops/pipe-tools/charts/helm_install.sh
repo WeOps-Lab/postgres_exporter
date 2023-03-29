@@ -29,7 +29,7 @@ for version in "${object_versions[@]}"; do
 
 
     if [[ $version == "15.0.0" ]]; then
-      helm install pg-cluster-$version_suffix --namespace $object -f ./values/bitnami_ha_values.yaml ./postgres-ha \
+      helm install pg-cluster-ha-$version_suffix --namespace $object -f ./values/bitnami_ha_values.yaml ./postgres-ha \
       --set image.tag=$version \
       --set commonLabels.object_version=$version_suffix
     fi
