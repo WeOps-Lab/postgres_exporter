@@ -19,7 +19,7 @@ primary:
   initdb:
     scripts:
       auth.sql: |
-        CREATE USER weops WITH PASSWORD 'Weops123!';
+        CREATE ROLE weops WITH LOGIN PASSWORD 'Weops123!';
         GRANT pg_monitor TO weops;
 
 readReplicas:
