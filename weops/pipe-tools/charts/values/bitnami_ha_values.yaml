@@ -1,0 +1,21 @@
+persistence:
+  enabled: false
+
+commonLabels:
+  object: postgres
+
+global:
+  postgresql:
+    auth:
+      # Password for the "postgres" admin user (overrides auth.postgresPassword)
+      postgresPassword: Weops123!
+
+postgresql:
+  nodeSelector:
+    node-role: worker
+  resources:
+    limits:
+      cpu: 500m
+      memory: 800Mi
+
+

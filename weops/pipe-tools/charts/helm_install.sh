@@ -27,5 +27,13 @@ for version in "${object_versions[@]}"; do
     --set commonLabels.object_version=$version_suffix \
     $pg_security_args
 
+
+    if [[ $version == "15.0.0"]]; then
+      helm install pg-cluster-ha-$version_suffix --namespace $object -f ./values/bitnami_ha_values.yaml ./postgres-ha \
+      --set image.tag=$version \
+      --set commonLabels.object_version=$version_suffix
+    fi
+
     sleep 3
 done
+

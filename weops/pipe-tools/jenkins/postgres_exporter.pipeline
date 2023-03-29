@@ -79,6 +79,9 @@ pipeline {
 
                                 sh "kubectl delete -f ./cluster -n ${component} --ignore-not-found"
                                 sh "kubectl apply -f ./cluster -n ${component}"
+
+                                sh "kubectl delete -f ./cluster_ha -n ${component} --ignore-not-found"
+                                sh "kubectl apply -f ./cluster_ha -n ${component}"
                             }
                         }
                     }

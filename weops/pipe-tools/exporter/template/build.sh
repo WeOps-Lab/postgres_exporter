@@ -11,3 +11,9 @@ for version in v9-4 v9-5 v9-6 v10-19 v11-0 v12-0 v13-0 v14-0 v15-0; do
     sed "s/{{VERSION}}/${version}/g; s/{{ARCHITECTURE}}/${architecture}/g" cluster.tpl >> ../cluster/${cluster_output_file}
   done
 done
+
+for version in v15-0; do
+  # 集群高可用
+  cluster_ha_output_file="cluster_ha_${version}.yaml"
+  sed "s/{{VERSION}}/${version}/g;" cluster_ha.tpl >> ../cluster_ha/${cluster_ha_output_file}
+done
