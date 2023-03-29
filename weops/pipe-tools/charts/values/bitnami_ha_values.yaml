@@ -19,49 +19,66 @@ postgresql:
       memory: 800Mi
   initdbScripts:
     auth.sql: |
-        CREATE ROLE weops WITH LOGIN PASSWORD 'Weops123!';
-        GRANT pg_monitor TO weops;
+      CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+      BEGIN
+        IF NOT EXISTS (
+                SELECT                       -- SELECT list can stay empty for this
+                FROM   pg_catalog.pg_user
+                WHERE  usename = 'weops') THEN
+          CREATE USER weops;
+        END IF;
+      END;
+      $$ language plpgsql;
 
-        CREATE SCHEMA IF NOT EXISTS weops;
-        GRANT USAGE ON SCHEMA weops TO weops;
+      SELECT __tmp_create_user();
+      DROP FUNCTION __tmp_create_user();
 
-        CREATE OR REPLACE FUNCTION get_pg_stat_activity() RETURNS SETOF pg_stat_activity AS
-        $$ SELECT * FROM pg_catalog.pg_stat_activity; $$
-        LANGUAGE sql
-        VOLATILE
-        SECURITY DEFINER;
+      ALTER USER weops WITH PASSWORD 'Weops123!';
+      ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
 
-        CREATE OR REPLACE VIEW weops.pg_stat_activity
-        AS
-          SELECT * from get_pg_stat_activity();
+      GRANT CONNECT ON DATABASE postgres TO weops;
 
-        GRANT SELECT ON weops.pg_stat_activity TO weops;
+      GRANT pg_monitor TO weops;
 
-        CREATE OR REPLACE FUNCTION get_pg_stat_replication() RETURNS SETOF pg_stat_replication AS
-        $$ SELECT * FROM pg_catalog.pg_stat_replication; $$
-        LANGUAGE sql
-        VOLATILE
-        SECURITY DEFINER;
+      CREATE SCHEMA IF NOT EXISTS weops;
+      GRANT USAGE ON SCHEMA weops TO weops;
 
-        CREATE OR REPLACE VIEW weops.pg_stat_replication
-        AS
-          SELECT * FROM get_pg_stat_replication();
+      CREATE OR REPLACE FUNCTION get_pg_stat_activity() RETURNS SETOF pg_stat_activity AS
+      $$ SELECT * FROM pg_catalog.pg_stat_activity; $$
+      LANGUAGE sql
+      VOLATILE
+      SECURITY DEFINER;
 
-        GRANT SELECT ON weops.pg_stat_replication TO weops;
+      CREATE OR REPLACE VIEW weops.pg_stat_activity
+      AS
+        SELECT * from get_pg_stat_activity();
 
-        CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-        CREATE OR REPLACE FUNCTION get_pg_stat_statements() RETURNS SETOF pg_stat_statements AS
-        $$ SELECT * FROM public.pg_stat_statements; $$
-        LANGUAGE sql
-        VOLATILE
-        SECURITY DEFINER;
+      GRANT SELECT ON weops.pg_stat_activity TO weops;
 
-        CREATE OR REPLACE VIEW weops.pg_stat_statements
-        AS
-          SELECT * FROM get_pg_stat_statements();
+      CREATE OR REPLACE FUNCTION get_pg_stat_replication() RETURNS SETOF pg_stat_replication AS
+      $$ SELECT * FROM pg_catalog.pg_stat_replication; $$
+      LANGUAGE sql
+      VOLATILE
+      SECURITY DEFINER;
 
-        GRANT SELECT ON weops.pg_stat_statements TO weops;
+      CREATE OR REPLACE VIEW weops.pg_stat_replication
+      AS
+        SELECT * FROM get_pg_stat_replication();
 
+      GRANT SELECT ON weops.pg_stat_replication TO weops;
+
+      CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+      CREATE OR REPLACE FUNCTION get_pg_stat_statements() RETURNS SETOF pg_stat_statements AS
+      $$ SELECT * FROM public.pg_stat_statements; $$
+      LANGUAGE sql
+      VOLATILE
+      SECURITY DEFINER;
+
+      CREATE OR REPLACE VIEW weops.pg_stat_statements
+      AS
+        SELECT * FROM get_pg_stat_statements();
+
+      GRANT SELECT ON weops.pg_stat_statements TO weops;
 
 
 

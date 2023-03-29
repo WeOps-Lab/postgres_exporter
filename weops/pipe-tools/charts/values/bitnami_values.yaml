@@ -33,7 +33,7 @@ primary:
         SELECT __tmp_create_user();
         DROP FUNCTION __tmp_create_user();
 
-        ALTER USER weops WITH PASSWORD 'Weops123';
+        ALTER USER weops WITH PASSWORD 'Weops123!';
         ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
 
         GRANT CONNECT ON DATABASE postgres TO weops;
