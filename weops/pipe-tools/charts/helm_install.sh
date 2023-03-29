@@ -34,6 +34,6 @@ for version in "${object_versions[@]}"; do
       --set commonLabels.object_version=$version_suffix
     fi
 
-    sleep 3
+    sleep 1
 done
 
