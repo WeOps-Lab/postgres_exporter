@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: pg-exporter-cluster-ha-{{VERSION}}
+  name: pg-exporter-cluster-ha-pgpool-{{VERSION}}
   namespace: postgres
 spec:
-  serviceName: pg-exporter-cluster-ha-{{VERSION}}
+  serviceName: pg-exporter-cluster-ha-pgpool-{{VERSION}}
   replicas: 1
   selector:
     matchLabels:
-      app: pg-exporter-cluster-ha-{{VERSION}}
+      app: pg-exporter-cluster-ha-pgpool-{{VERSION}}
   template:
     metadata:
       annotations:
@@ -45,7 +45,7 @@ spec:
         telegraf.influxdata.com/limits-cpu: '300m'
         telegraf.influxdata.com/limits-memory: '300Mi'
       labels:
-        app: pg-exporter-cluster-ha-{{VERSION}}
+        app: pg-exporter-cluster-ha-pgpool-{{VERSION}}
         exporter_object: postgres
         object_mode: cluster
         object_version: {{VERSION}}
@@ -59,7 +59,7 @@ spec:
           configMap:
             name: pg-extend-queries
       containers:
-      - name: pg-exporter-cluster-ha-{{VERSION}}
+      - name: pg-exporter-cluster-ha-pgpool-{{VERSION}}
         image: registry-svc:25000/library/postgres-exporter:latest
         imagePullPolicy: Always
         securityContext:
@@ -73,7 +73,7 @@ spec:
             name: pg-extend-queries
         env:
         - name: DATA_SOURCE_NAME
-          value: "postgresql://postgres:Weops123!@pg-cluster-{{VERSION}}-postgresql-ha-postgresql.postgres:5432?sslmode=disable"
+          value: "postgresql://postgres:Weops123!@pg-cluster-{{VERSION}}-postgresql-ha-pgpool.postgres:5432?sslmode=disable"
         resources:
           requests:
             cpu: 100m
@@ -89,8 +89,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: pg-exporter-cluster-ha-{{VERSION}}
-  name: pg-exporter-cluster-ha-{{VERSION}}
+    app: pg-exporter-cluster-ha-pgpool-{{VERSION}}
+  name: pg-exporter-cluster-ha-pgpool-{{VERSION}}
   namespace: postgres
   annotations:
     prometheus.io/scrape: "true"
@@ -102,4 +102,4 @@ spec:
     protocol: TCP
     targetPort: 9187
   selector:
-    app: pg-exporter-cluster-ha-{{VERSION}}
+    app: pg-exporter-cluster-ha-pgpool-{{VERSION}}
