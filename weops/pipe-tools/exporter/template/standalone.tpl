@@ -70,7 +70,7 @@ spec:
             name: pg-extend-queries
         env:
         - name: DATA_SOURCE_NAME
-          value: "postgresql://postgres:Weops123!@pg-standalone-{{VERSION}}-postgresql.postgres:5432/postgres?sslmode=disable"
+          value: "postgresql://weops:Weops123!@pg-standalone-{{VERSION}}-postgresql.postgres:5432/postgres?sslmode=disable"
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0
