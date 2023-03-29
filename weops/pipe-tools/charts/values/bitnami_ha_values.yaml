@@ -17,5 +17,12 @@ postgresql:
     limits:
       cpu: 500m
       memory: 800Mi
+  initdbScripts:
+    auth.sql: |
+      CREATE USER weops WITH PASSWORD 'Weops123!';
+      GRANT pg_monitor TO weops;
 
-
+pgpool:
+  initdbScripts: |
+    CREATE USER weops WITH PASSWORD 'Weops123!';
+    GRANT pg_monitor TO weops;

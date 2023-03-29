@@ -16,7 +16,11 @@ primary:
     limits:
       cpu: 500m
       memory: 800Mi
-
+  initdb:
+    scripts:
+      auth.sql: |
+        CREATE USER weops WITH PASSWORD 'Weops123!';
+        GRANT pg_monitor TO weops;
 
 readReplicas:
   name: secondary
