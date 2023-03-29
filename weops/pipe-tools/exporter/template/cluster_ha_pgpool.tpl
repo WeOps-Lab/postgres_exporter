@@ -73,7 +73,7 @@ spec:
             name: pg-extend-queries
         env:
         - name: DATA_SOURCE_NAME
-          value: "postgresql://weops:Weops123!@pg-cluster-ha-{{VERSION}}-postgresql-ha-pgpool.postgres:5432?sslmode=disable"
+          value: "postgresql://weops:Weops123!@pg-cluster-ha-{{VERSION}}-postgresql-ha-pgpool.postgres:5432/postgres?sslmode=disable"
         resources:
           requests:
             cpu: 100m
