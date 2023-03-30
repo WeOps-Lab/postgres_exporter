@@ -1,0 +1,173 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: create-pg-account-old
+  namespace: postgres
+spec:
+  schedule: "* * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            node-role: worker
+          containers:
+          - name: create-pg-standalone-v9-4-account
+            image: bitnami/postgresql: 9.4.6
+            command:
+              - /bin/sh
+              - -c
+              - |
+                  psql -h pg-standalone-v9-4-postgresql -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                    BEGIN
+                      IF NOT EXISTS (
+                              SELECT                       -- SELECT list can stay empty for this
+                              FROM   pg_catalog.pg_user
+                              WHERE  usename = 'weops') THEN
+                        CREATE USER weops;
+                      END IF;
+                    END;
+                    $$ language plpgsql;
+
+                    SELECT __tmp_create_user();
+                    DROP FUNCTION __tmp_create_user();
+
+                    ALTER USER weops WITH PASSWORD 'Weops123!';
+                    ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
+
+                    GRANT CONNECT ON DATABASE postgres TO weops;"
+
+          - name: create-pg-standalone-v9-5-account
+            image: bitnami/postgresql: 9.5.2-0
+            command:
+              - /bin/sh
+              - -c
+              - |
+                  psql -h pg-standalone-v9-4-postgresql -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                    BEGIN
+                      IF NOT EXISTS (
+                              SELECT                       -- SELECT list can stay empty for this
+                              FROM   pg_catalog.pg_user
+                              WHERE  usename = 'weops') THEN
+                        CREATE USER weops;
+                      END IF;
+                    END;
+                    $$ language plpgsql;
+
+                    SELECT __tmp_create_user();
+                    DROP FUNCTION __tmp_create_user();
+
+                    ALTER USER weops WITH PASSWORD 'Weops123!';
+                    ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
+
+                    GRANT CONNECT ON DATABASE postgres TO weops;"
+
+          - name: create-pg-cluster-primary-v9-4-account
+            image: bitnami/postgresql: 9.4.6
+            command:
+              - /bin/sh
+              - -c
+              - |
+                  psql -h pg-cluster-v9-4-postgresql-primary -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                    BEGIN
+                      IF NOT EXISTS (
+                              SELECT                       -- SELECT list can stay empty for this
+                              FROM   pg_catalog.pg_user
+                              WHERE  usename = 'weops') THEN
+                        CREATE USER weops;
+                      END IF;
+                    END;
+                    $$ language plpgsql;
+
+                    SELECT __tmp_create_user();
+                    DROP FUNCTION __tmp_create_user();
+
+                    ALTER USER weops WITH PASSWORD 'Weops123!';
+                    ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
+
+                    GRANT CONNECT ON DATABASE postgres TO weops;"
+
+          - name: create-pg-cluster-primary-v9-5-account
+            image: bitnami/postgresql: 9.5.2-0
+            command:
+              - /bin/sh
+              - -c
+              - |
+                  psql -h pg-cluster-v9-5-postgresql-primary -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                    BEGIN
+                      IF NOT EXISTS (
+                              SELECT                       -- SELECT list can stay empty for this
+                              FROM   pg_catalog.pg_user
+                              WHERE  usename = 'weops') THEN
+                        CREATE USER weops;
+                      END IF;
+                    END;
+                    $$ language plpgsql;
+
+                    SELECT __tmp_create_user();
+                    DROP FUNCTION __tmp_create_user();
+
+                    ALTER USER weops WITH PASSWORD 'Weops123!';
+                    ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
+
+                    GRANT CONNECT ON DATABASE postgres TO weops;"
+
+          - name: create-pg-cluster-secondary-v9-4-account
+            image: bitnami/postgresql: 9.4.6
+            command:
+              - /bin/sh
+              - -c
+              - |
+                  psql -h pg-cluster-v9-4-postgresql-secondary -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                    BEGIN
+                      IF NOT EXISTS (
+                              SELECT                       -- SELECT list can stay empty for this
+                              FROM   pg_catalog.pg_user
+                              WHERE  usename = 'weops') THEN
+                        CREATE USER weops;
+                      END IF;
+                    END;
+                    $$ language plpgsql;
+
+                    SELECT __tmp_create_user();
+                    DROP FUNCTION __tmp_create_user();
+
+                    ALTER USER weops WITH PASSWORD 'Weops123!';
+                    ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
+
+                    GRANT CONNECT ON DATABASE postgres TO weops;"
+
+          - name: create-pg-cluster-secondary-v9-5-account
+            image: bitnami/postgresql: 9.5.2-0
+            command:
+              - /bin/sh
+              - -c
+              - |
+                  psql -h pg-cluster-v9-5-postgresql-secondary -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                    BEGIN
+                      IF NOT EXISTS (
+                              SELECT                       -- SELECT list can stay empty for this
+                              FROM   pg_catalog.pg_user
+                              WHERE  usename = 'weops') THEN
+                        CREATE USER weops;
+                      END IF;
+                    END;
+                    $$ language plpgsql;
+
+                    SELECT __tmp_create_user();
+                    DROP FUNCTION __tmp_create_user();
+
+                    ALTER USER weops WITH PASSWORD 'Weops123!';
+                    ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
+
+                    GRANT CONNECT ON DATABASE postgres TO weops;"
+
+          restartPolicy: Never

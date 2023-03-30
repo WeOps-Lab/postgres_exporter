@@ -82,6 +82,9 @@ pipeline {
 
                                 sh "kubectl delete -f ./cluster_ha -n ${component} --ignore-not-found"
                                 sh "kubectl apply -f ./cluster_ha -n ${component}"
+
+                                sh "kubectl delete -f ./account.yml -n ${component} --ignore-not-found"
+                                sh "kubectl apply -f ./account.yml -n ${component}"
                             }
                         }
                     }
