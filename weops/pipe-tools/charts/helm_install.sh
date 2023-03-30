@@ -9,23 +9,21 @@ for version in "${object_versions[@]}"; do
 
     # 设置PodSecurityContext和ContainerSecurityContext
     if [[ $version == "9.4"* ]] || [[ $version == "9.5"* ]]; then
-        pg_security_args="--set primary.podSecurityContext.fsGroup=0 --set primary.containerSecurityContext.runAsUser=0 --set readReplicas.podSecurityContext.fsGroup=0 --set readReplicas.containerSecurityContext.runAsUser=0"
+        value_file="old_bitnami_values.yaml"
     else
-        pg_security_args=""
+        value_file="bitnami_values.yaml"
     fi
 
     # 单点
-    helm install pg-standalone-$version_suffix --namespace $object -f ./values/bitnami_values.yaml ./postgres \
+    helm install pg-standalone-$version_suffix --namespace $object -f ./values/$value_file ./postgres \
     --set image.tag=$version \
-    --set commonLabels.object_version=$version_suffix \
-    $pg_security_args
+    --set commonLabels.object_version=$version_suffix
 
     # 集群
-    helm install pg-cluster-$version_suffix --namespace $object -f ./values/bitnami_values.yaml ./postgres \
+    helm install pg-cluster-$version_suffix --namespace $object -f ./values/$value_file ./postgres \
     --set image.tag=$version \
     --set architecture=replication \
-    --set commonLabels.object_version=$version_suffix \
-    $pg_security_args
+    --set commonLabels.object_version=$version_suffix
 
 
     if [[ $version == "15.0.0" ]]; then
