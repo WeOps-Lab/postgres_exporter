@@ -16,7 +16,4 @@ for version in v15-0; do
   # 集群高可用
   cluster_ha_output_file="cluster_ha_${version}.yaml"
   sed "s/{{VERSION}}/${version}/g;" cluster_ha.tpl >> ../cluster_ha/${cluster_ha_output_file}
-
-  cluster_ha_pgpool_output_file="cluster_ha_pgpool_${version}.yaml"
-  sed "s/{{VERSION}}/${version}/g;" cluster_ha_pgpool.tpl >> ../cluster_ha/${cluster_ha_pgpool_output_file}
 done
