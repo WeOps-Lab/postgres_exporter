@@ -6,7 +6,7 @@ commonLabels:
 
 service:
   nodePorts:
-    postgresql: 5432
+    postgresql: "5432"
 
 global:
   postgresql:
