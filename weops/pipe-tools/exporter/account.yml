@@ -477,7 +477,7 @@ spec:
 
                     GRANT SELECT ON weops.pg_stat_statements TO weops;"
 
-          - name: create-pg-cluster-secondary-v11-account
+          - name: create-pg-cluster-secondary-v15-pgpool-account
             image: postgresql-repmgr:15.2.0-debian-11-r13
             command:
               - /bin/sh
