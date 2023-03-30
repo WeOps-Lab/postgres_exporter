@@ -18,8 +18,8 @@ primary:
       memory: 300Mi
   podSecurityContext:
     fsGroup: 0
-    containerSecurityContext:
-      runAsUser: 0
+  containerSecurityContext:
+    runAsUser: 0
   initdb:
     scripts:
       old_auth.sql: |
@@ -77,5 +77,5 @@ readReplicas:
       memory: 800Mi
   podSecurityContext:
     fsGroup: 0
-    containerSecurityContext:
-      runAsUser: 0
+  containerSecurityContext:
+    runAsUser: 0
