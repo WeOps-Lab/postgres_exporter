@@ -4,6 +4,10 @@ persistence:
 commonLabels:
   object: postgres
 
+service:
+  nodePorts:
+    postgresql: 5432
+
 global:
   postgresql:
     password: Weops123!

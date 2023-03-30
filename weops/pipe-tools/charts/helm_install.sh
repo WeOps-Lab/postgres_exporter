@@ -25,7 +25,7 @@ for version in "${object_versions[@]}"; do
     --set architecture=replication \
     --set commonLabels.object_version=$version_suffix
 
-
+    # 集群高可用
     if [[ $version == "15.0.0" ]]; then
       helm install pg-cluster-ha-$version_suffix --namespace $object -f ./values/bitnami_ha_values.yaml ./postgres-ha \
       --set image.tag=$version \
