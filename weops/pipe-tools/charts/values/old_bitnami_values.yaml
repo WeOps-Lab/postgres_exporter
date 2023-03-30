@@ -73,8 +73,8 @@ readReplicas:
     enabled: false
   resources:
     limits:
-      cpu: 500m
-      memory: 800Mi
+      cpu: 250m
+      memory: 300Mi
   podSecurityContext:
     fsGroup: 0
   containerSecurityContext:
