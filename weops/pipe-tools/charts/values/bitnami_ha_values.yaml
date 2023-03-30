@@ -15,8 +15,8 @@ postgresql:
     node-role: worker
   resources:
     limits:
-      cpu: 500m
-      memory: 800Mi
+      cpu: 300m
+      memory: 500Mi
   initdbScripts:
     auth.sql: |
       CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$

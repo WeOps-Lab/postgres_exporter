@@ -14,8 +14,8 @@ primary:
     enabled: false
   resources:
     limits:
-      cpu: 500m
-      memory: 800Mi
+      cpu: 250m
+      memory: 300Mi
   initdb:
     scripts:
       auth.sql: |
