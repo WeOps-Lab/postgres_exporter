@@ -24,23 +24,23 @@ primary:
     scripts:
       old_auth.sql: |
         CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
-          BEGIN
-            IF NOT EXISTS (
-                    SELECT                       -- SELECT list can stay empty for this
-                    FROM   pg_catalog.pg_user
-                    WHERE  usename = 'weops') THEN
-              CREATE USER weops;
-            END IF;
-          END;
-          $$ language plpgsql;
+        BEGIN
+          IF NOT EXISTS (
+                  SELECT                       -- SELECT list can stay empty for this
+                  FROM   pg_catalog.pg_user
+                  WHERE  usename = 'weops') THEN
+            CREATE USER weops;
+          END IF;
+        END;
+        $$ language plpgsql;
 
-          SELECT __tmp_create_user();
-          DROP FUNCTION __tmp_create_user();
+        SELECT __tmp_create_user();
+        DROP FUNCTION __tmp_create_user();
 
-          ALTER USER weops WITH PASSWORD 'Weops123!';
-          ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
+        ALTER USER weops WITH PASSWORD 'Weops123!';
+        ALTER USER weops SET SEARCH_PATH TO weops,pg_catalog;
 
-          GRANT CONNECT ON DATABASE postgres TO weops;
+        GRANT CONNECT ON DATABASE postgres TO weops;
 
 
 readReplicas:
