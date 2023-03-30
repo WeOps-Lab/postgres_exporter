@@ -20,8 +20,8 @@ spec:
               - /bin/sh
               - -c
               - |
-                  psql -h pg-standalone-v9-4-postgresql -U postgres -c "
-                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                  PGPASSWORD=Weops123! psql -h pg-standalone-v9-4-postgresql -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as \$\$
                     BEGIN
                       IF NOT EXISTS (
                               SELECT                       -- SELECT list can stay empty for this
@@ -30,7 +30,7 @@ spec:
                         CREATE USER weops;
                       END IF;
                     END;
-                    $$ language plpgsql;
+                    \$\$ language plpgsql;
 
                     SELECT __tmp_create_user();
                     DROP FUNCTION __tmp_create_user();
@@ -46,8 +46,8 @@ spec:
               - /bin/sh
               - -c
               - |
-                  psql -h pg-standalone-v9-4-postgresql -U postgres -c "
-                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                  PGPASSWORD=Weops123! psql -h pg-standalone-v9-5-postgresql -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as \$\$
                     BEGIN
                       IF NOT EXISTS (
                               SELECT                       -- SELECT list can stay empty for this
@@ -56,7 +56,7 @@ spec:
                         CREATE USER weops;
                       END IF;
                     END;
-                    $$ language plpgsql;
+                    \$\$ language plpgsql;
 
                     SELECT __tmp_create_user();
                     DROP FUNCTION __tmp_create_user();
@@ -72,8 +72,8 @@ spec:
               - /bin/sh
               - -c
               - |
-                  psql -h pg-cluster-v9-4-postgresql-primary -U postgres -c "
-                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                  PGPASSWORD=Weops123! psql -h pg-cluster-v9-4-postgresql-primary -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as \$\$
                     BEGIN
                       IF NOT EXISTS (
                               SELECT                       -- SELECT list can stay empty for this
@@ -82,7 +82,7 @@ spec:
                         CREATE USER weops;
                       END IF;
                     END;
-                    $$ language plpgsql;
+                    \$\$ language plpgsql;
 
                     SELECT __tmp_create_user();
                     DROP FUNCTION __tmp_create_user();
@@ -98,8 +98,8 @@ spec:
               - /bin/sh
               - -c
               - |
-                  psql -h pg-cluster-v9-5-postgresql-primary -U postgres -c "
-                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                  PGPASSWORD=Weops123! psql -h pg-cluster-v9-5-postgresql-primary -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as \$\$
                     BEGIN
                       IF NOT EXISTS (
                               SELECT                       -- SELECT list can stay empty for this
@@ -108,7 +108,7 @@ spec:
                         CREATE USER weops;
                       END IF;
                     END;
-                    $$ language plpgsql;
+                    \$\$ language plpgsql;
 
                     SELECT __tmp_create_user();
                     DROP FUNCTION __tmp_create_user();
@@ -124,8 +124,8 @@ spec:
               - /bin/sh
               - -c
               - |
-                  psql -h pg-cluster-v9-4-postgresql-secondary -U postgres -c "
-                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                  PGPASSWORD=Weops123! psql -h pg-cluster-v9-4-postgresql-secondary -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as \$\$
                     BEGIN
                       IF NOT EXISTS (
                               SELECT                       -- SELECT list can stay empty for this
@@ -134,7 +134,7 @@ spec:
                         CREATE USER weops;
                       END IF;
                     END;
-                    $$ language plpgsql;
+                    \$\$ language plpgsql;
 
                     SELECT __tmp_create_user();
                     DROP FUNCTION __tmp_create_user();
@@ -150,8 +150,8 @@ spec:
               - /bin/sh
               - -c
               - |
-                  psql -h pg-cluster-v9-5-postgresql-secondary -U postgres -c "
-                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+                  PGPASSWORD=Weops123! psql -h pg-cluster-v9-5-postgresql-secondary -U postgres -c "
+                    CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as \$\$
                     BEGIN
                       IF NOT EXISTS (
                               SELECT                       -- SELECT list can stay empty for this
@@ -160,7 +160,7 @@ spec:
                         CREATE USER weops;
                       END IF;
                     END;
-                    $$ language plpgsql;
+                    \$\$ language plpgsql;
 
                     SELECT __tmp_create_user();
                     DROP FUNCTION __tmp_create_user();
