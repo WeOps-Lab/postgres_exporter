@@ -80,6 +80,7 @@ global:
 postgresql:
   nodeSelector:
     node-role: worker
+  sharedPreloadLibraries: "pgaudit, pg_stat_statements"
   resources:
     limits:
       cpu: 300m
