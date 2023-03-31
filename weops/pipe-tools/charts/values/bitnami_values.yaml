@@ -7,6 +7,9 @@ global:
       # Password for the "postgres" admin user (overrides auth.postgresPassword)
       postgresPassword: Weops123!
 
+postgresql:
+  sharedPreloadLibraries: pgaudit, pg_stat_statements
+
 primary:
   nodeSelector:
     node-role: worker
