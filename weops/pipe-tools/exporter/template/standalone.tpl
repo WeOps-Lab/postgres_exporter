@@ -66,7 +66,7 @@ spec:
           - --extend.query-path=/query_conf/queries.yaml
         volumeMounts:
           - mountPath: /query_conf
-            name: pg-extend-queries
+            name: {{QUERYCONFIGMAP}}
         env:
         - name: DATA_SOURCE_NAME
           value: "postgresql://weops:Weops123!@pg-standalone-{{VERSION}}-postgresql.postgres:5432/postgres?sslmode=disable"

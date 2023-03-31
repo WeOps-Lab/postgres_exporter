@@ -57,7 +57,7 @@ spec:
       volumes:
         - name: pg-extend-queries
           configMap:
-            name: pg-extend-queries
+            name: {{QUERYCONFIGMAP}}
       containers:
       - name: pg-exporter-cluster-{{ARCHITECTURE}}-{{VERSION}}
         image: registry-svc:25000/library/postgres-exporter:latest
