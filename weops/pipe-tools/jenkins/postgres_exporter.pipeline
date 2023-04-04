@@ -87,7 +87,6 @@ pipeline {
                                 sh "kubectl delete -f ./account.yml -n ${component} --ignore-not-found"
                                 sh "kubectl apply -f ./account.yml -n ${component}"
 
-                                sh "kubectl patch service -n postgres pg-cluster-ha-v15-0-postgresql-ha-postgresql --type json -p='[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":5432}]'"
                             }
                         }
                     }
