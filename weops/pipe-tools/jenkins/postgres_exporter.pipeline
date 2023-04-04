@@ -97,5 +97,15 @@ pipeline {
                 }
             }
         }
+
+        stage('上传探针制品'){
+            steps {
+                dir("${env.BuildPath}") {
+                    sh "tar -cvzf postgres_exporter_${env.GitTag}.tar.gz postgres_exporter postgres_exporter.exe postgres_exporter_arm64"
+                    minio bucket: "release", credentialsId: "minio", excludes: "", host: "http://10.10.25.66:9000/", includes: "postgres_exporter_${env.GitTag}.tar.gz", targetFolder: "monitor_plugin/postgres/binary"
+                    }
+                }
+            }
+        }
     }
 }
