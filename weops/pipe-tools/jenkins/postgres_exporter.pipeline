@@ -86,6 +86,8 @@ pipeline {
 
                                 sh "kubectl delete -f ./account.yml -n ${component} --ignore-not-found"
                                 sh "kubectl apply -f ./account.yml -n ${component}"
+
+                                sh "kubectl patch service -n postgres pg-cluster-ha-v15-0-postgresql-ha-postgresql -p '{"spec":{"ports":[{"name":"postgres","nodePort":5432}]}}'"
                             }
                         }
                     }
