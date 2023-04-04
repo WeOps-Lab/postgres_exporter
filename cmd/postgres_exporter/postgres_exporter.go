@@ -259,7 +259,7 @@ var builtinMetricMaps = map[string]intermediateMetricMap{
 	"pg_replication_slots": {
 		map[string]ColumnMapping{
 			"slot_name":       {LABEL, "Name of the replication slot", nil, nil},
-			"database":        {LABEL, "Name of the database", nil, nil},
+			"datname":         {LABEL, "Name of the database", nil, nil},
 			"active":          {GAUGE, "Flag indicating if the slot is active", nil, nil},
 			"pg_wal_lsn_diff": {GAUGE, "Replication lag in bytes", nil, nil},
 		},
