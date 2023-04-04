@@ -66,7 +66,7 @@ const (
 	// e.g. version
 	staticLabelName = "static"
 	// Metric label used for server identification.
-	serverLabelName = "server_label"
+	serverLabelName = "server"
 )
 
 func main() {
