@@ -85,7 +85,7 @@ postgresql:
       GRANT SELECT ON weops.pg_stat_statements TO weops;
 
 pgpool:
-  authenticationMethod: ""
+  customUsersSecret: mypgpoolusers
   adminPassword: Weops123!
   initdbScripts:
     auth.sql: |

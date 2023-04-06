@@ -74,6 +74,9 @@ pipeline {
                         def components = ["postgres"]
                         components.each { component ->
                             dir("weops/pipe-tools/exporter") {
+                                sh "kubectl delete -f ./secret -n ${component} --ignore-not-found"
+                                sh "kubectl apply -f ./secret -n ${component} --ignore-not-found"
+
                                 sh "kubectl delete -f ./configMap -n ${component} --ignore-not-found"
                                 sh "kubectl apply -f ./configMap -n ${component}"
 
