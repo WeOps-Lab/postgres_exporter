@@ -65,6 +65,8 @@ pipeline {
             steps {
                 dir("weops/pipe-tools/exporter/template") {
                     sh 'bash build.sh'
+                    sh 'cp query.yml ../../bin'
+                    sh 'cp query_old.yml ../../bin'
                 }
 
                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'chaos', namespace: '', serverUrl: 'https://10.10.90.113:6443') {
@@ -101,7 +103,7 @@ pipeline {
         stage('上传探针制品'){
             steps {
                 dir("${env.BuildPath}") {
-                    sh "tar -cvzf postgres_exporter_${env.GitTag}.tar.gz postgres_exporter postgres_exporter.exe postgres_exporter_arm64"
+                    sh "tar -cvzf postgres_exporter_${env.GitTag}.tar.gz postgres_exporter postgres_exporter.exe postgres_exporter_arm64 query.yml  query_old.yml"
                     minio bucket: "release", credentialsId: "minio", excludes: "", host: "http://10.10.25.66:9000/", includes: "postgres_exporter_${env.GitTag}.tar.gz", targetFolder: "monitor_plugin/postgres/binary"
                     }
                 }
