@@ -42,6 +42,45 @@ primary:
 
         GRANT pg_monitor TO weops;
 
+        CREATE SCHEMA IF NOT EXISTS weops;
+        GRANT USAGE ON SCHEMA weops TO weops;
+
+        CREATE OR REPLACE FUNCTION get_pg_stat_activity() RETURNS SETOF pg_stat_activity AS
+        $$ SELECT * FROM pg_catalog.pg_stat_activity; $$
+        LANGUAGE sql
+        VOLATILE
+        SECURITY DEFINER;
+
+        CREATE OR REPLACE VIEW weops.pg_stat_activity
+        AS
+          SELECT * from get_pg_stat_activity();
+
+        GRANT SELECT ON weops.pg_stat_activity TO weops;
+
+        CREATE OR REPLACE FUNCTION get_pg_stat_replication() RETURNS SETOF pg_stat_replication AS
+        $$ SELECT * FROM pg_catalog.pg_stat_replication; $$
+        LANGUAGE sql
+        VOLATILE
+        SECURITY DEFINER;
+
+        CREATE OR REPLACE VIEW weops.pg_stat_replication
+        AS
+          SELECT * FROM get_pg_stat_replication();
+
+        GRANT SELECT ON weops.pg_stat_replication TO weops;
+
+        CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+        CREATE OR REPLACE FUNCTION get_pg_stat_statements() RETURNS SETOF pg_stat_statements AS
+        $$ SELECT * FROM public.pg_stat_statements; $$
+        LANGUAGE sql
+        VOLATILE
+        SECURITY DEFINER;
+
+        CREATE OR REPLACE VIEW weops.pg_stat_statements
+        AS
+          SELECT * FROM get_pg_stat_statements();
+
+        GRANT SELECT ON weops.pg_stat_statements TO weops;
 
 readReplicas:
   name: secondary
