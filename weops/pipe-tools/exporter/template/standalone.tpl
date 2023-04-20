@@ -57,7 +57,7 @@ spec:
       volumes:
         - name: pg-extend-queries
           configMap:
-            name: pg-extend-queries
+            name: {{QUERYCONFIGMAP}}
       containers:
       - name: pg-exporter-standalone-{{VERSION}}
         image: registry-svc:25000/library/postgres-exporter:latest
@@ -66,7 +66,7 @@ spec:
           - --extend.query-path=/query_conf/queries.yaml
         volumeMounts:
           - mountPath: /query_conf
-            name: {{QUERYCONFIGMAP}}
+            name: pg-extend-queries
         env:
         - name: DATA_SOURCE_NAME
           value: "postgresql://weops:Weops123!@pg-standalone-{{VERSION}}-postgresql.postgres:5432/postgres?sslmode=disable"
