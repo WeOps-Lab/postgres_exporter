@@ -4,7 +4,7 @@ metadata:
   name: create-pg-account-old
   namespace: postgres
 spec:
-  schedule: "* * * * *"
+  schedule: "*/5 * * * *"
   successfulJobsHistoryLimit: 2
   failedJobsHistoryLimit: 2
   jobTemplate:
