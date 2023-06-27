@@ -68,8 +68,14 @@ spec:
           - mountPath: /query_conf
             name: pg-extend-queries
         env:
-        - name: DATA_SOURCE_NAME
-          value: "postgresql://weops:Weops123!@pg-standalone-{{VERSION}}-postgresql.postgres:5432/postgres?sslmode=disable"
+        - name: DATA_SOURCE_HOST
+          value: "pg-standalone-{{VERSION}}-postgresql.postgres"
+        - name: DATA_SOURCE_PORT
+          value: "5432"
+        - name: DATA_SOURCE_USER
+          value: "weops"
+        - name: DATA_SOURCE_PASS
+          value: "Weops123!"
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0

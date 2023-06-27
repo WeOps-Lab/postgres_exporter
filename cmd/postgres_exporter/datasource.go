@@ -125,7 +125,7 @@ func getDataSources() ([]string, error) {
 		return strings.Split(dsn, ","), nil
 	}
 
-	var user, pass, uri string
+	var user, pass, uri, host, port string
 
 	dataSourceUserFile := os.Getenv("DATA_SOURCE_USER_FILE")
 	if len(dataSourceUserFile) != 0 {
@@ -149,7 +149,6 @@ func getDataSources() ([]string, error) {
 		pass = os.Getenv("DATA_SOURCE_PASS")
 	}
 
-	ui := url.UserPassword(user, pass).String()
 	dataSrouceURIFile := os.Getenv("DATA_SOURCE_URI_FILE")
 	if len(dataSrouceURIFile) != 0 {
 		fileContents, err := os.ReadFile(dataSrouceURIFile)
@@ -159,15 +158,20 @@ func getDataSources() ([]string, error) {
 		uri = strings.TrimSpace(string(fileContents))
 	} else {
 		uri = os.Getenv("DATA_SOURCE_URI")
+		host = os.Getenv("DATA_SOURCE_HOST")
+		port = os.Getenv("DATA_SOURCE_PORT")
 	}
 
+	if host != "" && port != "" {
+		uri = fmt.Sprintf("%s:%s", host, port)
+	}
 	// No datasources found. This allows us to support the multi-target pattern
 	// without an explicit datasource.
 	if uri == "" {
 		return []string{}, nil
 	}
 
-	dsn = "postgresql://" + ui + "@" + uri
+	dsn = fmt.Sprintf("postgresql://%s:%s@%s:%s/postgres?sslmode=disable", url.QueryEscape(user), url.QueryEscape(pass), host, port)
 
 	return []string{dsn}, nil
 }
