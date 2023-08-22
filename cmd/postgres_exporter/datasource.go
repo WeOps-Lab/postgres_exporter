@@ -171,7 +171,9 @@ func getDataSources() ([]string, error) {
 		return []string{}, nil
 	}
 
-	dsn = fmt.Sprintf("postgresql://%s:%s@%s:%s/postgres?sslmode=disable", url.QueryEscape(user), url.QueryEscape(pass), host, port)
+	db := os.Getenv("DATA_SOURCE_DB")
+
+	dsn = fmt.Sprintf("postgresql://%v:%v@%v:%v/%v?sslmode=disable", url.QueryEscape(user), url.QueryEscape(pass), host, port, db)
 
 	return []string{dsn}, nil
 }
