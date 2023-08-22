@@ -79,6 +79,8 @@ spec:
           value: "weops"
         - name: DATA_SOURCE_PASS
           value: "Weops123!"
+        - name: DATA_SOURCE_DB
+          value: "postgres"
         resources:
           requests:
             cpu: 100m

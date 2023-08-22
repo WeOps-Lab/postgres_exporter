@@ -76,6 +76,8 @@ spec:
           value: "weops"
         - name: DATA_SOURCE_PASS
           value: "Weops123!"
+        - name: DATA_SOURCE_DB
+          value: "postgres"
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0
