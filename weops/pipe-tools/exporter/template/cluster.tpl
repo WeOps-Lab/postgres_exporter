@@ -54,10 +54,6 @@ spec:
       nodeSelector:
         node-role: worker
       shareProcessNamespace: true
-      volumes:
-        - name: pg-extend-queries
-          configMap:
-            name: {{QUERYCONFIGMAP}}
       containers:
       - name: pg-exporter-cluster-{{ARCHITECTURE}}-{{VERSION}}
         image: registry-svc:25000/library/postgres-exporter:latest
@@ -66,10 +62,10 @@ spec:
           allowPrivilegeEscalation: false
           runAsUser: 0
         args:
-          - --extend.query-path=/query_conf/queries.yaml
-        volumeMounts:
-          - mountPath: /query_conf
-            name: pg-extend-queries
+        - --collector.xlog_location
+        - --collector.long_running_transactions
+        - --collector.postmaster
+        - --collector.stat_statements
         env:
         - name: DATA_SOURCE_HOST
           value: "pg-cluster-{{VERSION}}-postgresql-{{ARCHITECTURE}}.postgres"
