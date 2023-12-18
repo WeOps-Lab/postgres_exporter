@@ -21,8 +21,10 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
+const databaseSubsystem = "database"
+
 func init() {
-	registerCollector("database", defaultEnabled, NewPGDatabaseCollector)
+	registerCollector(databaseSubsystem, defaultEnabled, NewPGDatabaseCollector)
 }
 
 type PGDatabaseCollector struct {
@@ -41,13 +43,20 @@ func NewPGDatabaseCollector(config collectorConfig) (Collector, error) {
 	}, nil
 }
 
-var pgDatabase = map[string]*prometheus.Desc{
-	"size_bytes": prometheus.NewDesc(
-		"pg_database_size_bytes",
+var (
+	pgDatabaseSizeDesc = prometheus.NewDesc(
+		prometheus.BuildFQName(
+			namespace,
+			databaseSubsystem,
+			"size_bytes",
+		),
 		"Disk space used by the database",
 		[]string{"datname"}, nil,
-	),
-}
+	)
+
+	pgDatabaseQuery     = "SELECT pg_database.datname FROM pg_database;"
+	pgDatabaseSizeQuery = "SELECT pg_database_size($1)"
+)
 
 // Update implements Collector and exposes database size.
 // It is called by the Prometheus registry when collecting metrics.
@@ -57,12 +66,11 @@ var pgDatabase = map[string]*prometheus.Desc{
 // each database individually. This is because we can't filter the
 // list of databases in the query because the list of excluded
 // databases is dynamic.
-func (c PGDatabaseCollector) Update(ctx context.Context, db *sql.DB, ch chan<- prometheus.Metric) error {
+func (c PGDatabaseCollector) Update(ctx context.Context, instance *instance, ch chan<- prometheus.Metric) error {
+	db := instance.getDB()
 	// Query the list of databases
 	rows, err := db.QueryContext(ctx,
-		`SELECT pg_database.datname
-		FROM pg_database;
-		`,
+		pgDatabaseQuery,
 	)
 	if err != nil {
 		return err
@@ -72,38 +80,42 @@ func (c PGDatabaseCollector) Update(ctx context.Context, db *sql.DB, ch chan<- p
 	var databases []string
 
 	for rows.Next() {
-		var datname string
+		var datname sql.NullString
 		if err := rows.Scan(&datname); err != nil {
 			return err
 		}
 
+		if !datname.Valid {
+			continue
+		}
 		// Ignore excluded databases
 		// Filtering is done here instead of in the query to avoid
 		// a complicated NOT IN query with a variable number of parameters
-		if sliceContains(c.excludedDatabases, datname) {
+		if sliceContains(c.excludedDatabases, datname.String) {
 			continue
 		}
 
-		databases = append(databases, datname)
+		databases = append(databases, datname.String)
 	}
 
 	// Query the size of the databases
 	for _, datname := range databases {
-		var size int64
-		err = db.QueryRowContext(ctx, "SELECT pg_database_size($1)", datname).Scan(&size)
+		var size sql.NullFloat64
+		err = db.QueryRowContext(ctx, pgDatabaseSizeQuery, datname).Scan(&size)
 		if err != nil {
 			return err
 		}
 
+		sizeMetric := 0.0
+		if size.Valid {
+			sizeMetric = size.Float64
+		}
 		ch <- prometheus.MustNewConstMetric(
-			pgDatabase["size_bytes"],
-			prometheus.GaugeValue, float64(size), datname,
+			pgDatabaseSizeDesc,
+			prometheus.GaugeValue, sizeMetric, datname,
 		)
 	}
-	if err := rows.Err(); err != nil {
-		return err
-	}
-	return nil
+	return rows.Err()
 }
 
 func sliceContains(slice []string, s string) bool {
