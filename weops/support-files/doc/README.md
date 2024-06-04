@@ -173,11 +173,11 @@ PostgreSQL: `9.4`, `9.5`, `9.6`, `10`, `11`, `12`, `13`, `14`, `15`
 | pg_long_running_transactions                 | PostgreSQL长时间运行事务数量         | -                                                             | -                           | -      |
 | pg_stat_database_xact_commit                 | PostgreSQL数据库事务提交数          | datid, datname                                                | 数据库ID, 数据库名称                | -      |
 | pg_stat_database_xact_rollback               | PostgreSQL数据库事务回滚数          | datid, datname                                                | 数据库ID, 数据库名称                | -      |
-| pg_stat_statements_calls_total               | PostgreSQL查询执行的总次数          | datname, queryid, user                                        | 数据库名称, 查询ID, 用户名            | -      |
-| pg_stat_statements_seconds_total             | PostgreSQL查询总执行时间           | datname, queryid, user                                        | 数据库名称, 查询ID, 数据库角色名称, 服务器   | s      |
-| pg_stat_statements_rows_total                | PostgreSQL查询行数统计            | datname, queryid, user                                        | 数据库名称, 查询ID, 用户名            | -      |
-| pg_stat_statements_block_read_seconds_total  | PostgreSQL从磁盘读取块的总时间        | datname, queryid, user                                        | 数据库名称, 查询ID, 用户名            | s      |
-| pg_stat_statements_block_write_seconds_total | PostgreSQL写入块到磁盘的总时间        | datname, queryid, user                                        | 数据库名称, 查询ID, 用户名            | s      |
+| pg_stat_statements_calls_total               | PostgreSQL查询执行的总次数          | datname, user                                                 | 数据库名称, 查询ID, 用户名            | -      |
+| pg_stat_statements_seconds_total             | PostgreSQL查询总执行时间           | datname, user                                                 | 数据库名称, 查询ID, 数据库角色名称, 服务器   | s      |
+| pg_stat_statements_rows_total                | PostgreSQL查询行数统计            | datname, user                                                 | 数据库名称, 查询ID, 用户名            | -      |
+| pg_stat_statements_block_read_seconds_total  | PostgreSQL从磁盘读取块的总时间        | datname, user                                                 | 数据库名称, 查询ID, 用户名            | s      |
+| pg_stat_statements_block_write_seconds_total | PostgreSQL写入块到磁盘的总时间        | datname, user                                                 | 数据库名称, 查询ID, 用户名            | s      |
 | pg_replication_lag_seconds                   | PostgreSQL复制延迟              | -                                                             | -                           | s      |
 | pg_stat_replication_reply_time               | PostgreSQL复制的响应时间戳          | application_name, client_addr, server_label, slot_name, state | 应用名称, 客户端地址, 服务器, 复制槽名称, 状态 | s      |
 | pg_stat_replication_pg_current_wal_lsn_bytes | PostgreSQL当前WAL LSN大小       | application_name, client_addr, server_label, slot_name, state | 应用名称, 客户端地址, 服务器, 复制槽名称, 状态 | bytes  |
@@ -224,6 +224,9 @@ PostgreSQL: `9.4`, `9.5`, `9.6`, `10`, `11`, `12`, `13`, `14`, `15`
 - pg_stat_statements_类指标优化
 - 增加采集器类开关，优化性能
 - 部分指标单位由ms更改为s
+  
+#### weops_postgres_exporter 3.1.5
+- 默认关闭queryid维度，解决维度太多前端显示问题
 
 添加“小嘉”微信即可获取postgres监控指标最佳实践礼包，其他更多问题欢迎咨询
 
