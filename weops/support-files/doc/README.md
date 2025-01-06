@@ -228,6 +228,9 @@ PostgreSQL: `9.4`, `9.5`, `9.6`, `10`, `11`, `12`, `13`, `14`, `15`
 #### weops_postgres_exporter 3.1.5
 - 默认关闭queryid维度，解决维度太多前端显示问题
 
+#### weops_postgres_exporter 3.1.6
+- 修复数据库单位为1024kB时报错问题
+
 添加“小嘉”微信即可获取postgres监控指标最佳实践礼包，其他更多问题欢迎咨询
 
 <img src="https://wedoc.canway.net/imgs/img/小嘉.jpg" width="50%" height="50%">
